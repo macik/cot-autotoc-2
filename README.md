@@ -7,7 +7,7 @@ This Cotonti plugin automatically generates a Table Of Contents for any page.
 HTML heading tags are extracted and listed in a tree. The page body is modified 
 to include anchors in source HTML.
 
-Features on new AutoTOC
+Features of new AutoTOC
 -----------------------
 
 * Fixed bug with output empty TOC on some pages
