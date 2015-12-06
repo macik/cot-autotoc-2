@@ -11,9 +11,12 @@ Features on new AutoTOC
 -----------------------
 
 * Fixed bug with output empty TOC on some pages
+* Fixed GHengeveld/AutoTOC#1 (wrong numbering on same titles)
 * Now used canonical URL for TOC
 * Customizing and overriding TOC display style via resource strings
 * Added configurable class and prefix for TOC item
+* Allow TOC elements with attributes
+* Allow unlimited nesting
 
 Installation
 ------------

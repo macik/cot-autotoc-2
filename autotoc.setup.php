@@ -4,8 +4,8 @@
 Code=autotoc
 Name=AutoTOC
 Description=Generate table of contents based on html elements in page
-Version=1.1.1
-Date=2015-12-04
+Version=1.2.0
+Date=2015-12-05
 Author=Koradhil and Cotonti Team
 Copyright=Webmojo
 Notes=BSD License
