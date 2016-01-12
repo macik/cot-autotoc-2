@@ -11,7 +11,7 @@ require_once cot_langfile('autotoc');
 require_once cot_incfile('autotoc','plug');
 require_once cot_incfile('autotoc','plug','resources');
 
-$elems = explode(',', $cfg['plugin']['autotoc']['elements']);
+$elems = explode(',', $cfg['plugin']['autotoc']['ch_elements']);
 $text = $t->vars['PAGE_TEXT'];
 
 $toc = getTOC($text, $elems);

@@ -95,12 +95,15 @@ function buildTOC(&$text, $toc_data)
 		$prefix = cot::$cfg['plugin']['autotoc']['ch_prefix'];
 		$class =  cot::$cfg['plugin']['autotoc']['ch_class'];
 		$params = array(
-			'title_safe' => strip_tags(trim($data['title'])),
+			'title_safe' => trim(strip_tags($data['title'])),
 			'class' => $class ? $class : 'anchor',
 			'prefix' => $prefix ? $prefix : 'ch',
 			'url' => $out['canonical_uri'] . '#' . ($prefix ? $prefix : 'ch') . $number,
 		);
+
+		if (cot::$cfg['plugin']['autotoc']['strip_tags']) $data['title'] = $params['title_safe'];
 		$tpl_data = array_merge($data, $params);
+
 		$new_item = cot_rc('autotoc_anchor', $tpl_data);
 
 		// adding anchors
