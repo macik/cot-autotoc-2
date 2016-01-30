@@ -12,14 +12,18 @@ function getTOC($text, $toc_elements, $flatlist = false)
 
 	$chapters = array();
 	$chapters_elem = array();
+	$level = 0;
+	foreach ($toc_elements as $k => $elem)
 
-	foreach ($toc_elements as $level => $elem)
 	{
 		$elem = trim($elem);
 		$headings = array();
 		$pe_elem = preg_quote($elem);
 		preg_match_all("`<{$pe_elem}([^>]*)>(.+?)</$pe_elem>`is", $text, $headings, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
-		if (!$headings) continue;
+		if (!$headings) {
+			unset($toc_elements[$k]);
+			continue;
+		}
 		foreach ($headings as $heading)
 		{
 			$offset  = $heading[0][1];
@@ -36,6 +40,7 @@ function getTOC($text, $toc_elements, $flatlist = false)
 				'length'  => $length,
 			);
 		}
+		$level++;
 	}
 	ksort($chapters); // ordering by offset
 
@@ -71,9 +76,12 @@ function getTOC($text, $toc_elements, $flatlist = false)
 		$sublist = $stack[$deep];
 		unset($stack[$deep]);
 		$deep--;
-		$keys = array_keys($stack[$deep]);
-		$last_key = array_pop($keys);
-		$stack[$deep][$last_key]['sublist'] = $sublist;
+		if (is_array($stack[$deep]))
+		{
+			$keys = array_keys($stack[$deep]);
+			$last_key = array_pop($keys);
+			$stack[$deep][$last_key]['sublist'] = $sublist;
+		}
 	}
 	return $flatlist ? $data : (is_array($stack[0]) ? $stack[0] : array());
 }
@@ -100,7 +108,7 @@ function buildTOC(&$text, $toc_data)
 			'prefix' => $prefix ? $prefix : 'ch',
 			'url' => $out['canonical_uri'] . '#' . ($prefix ? $prefix : 'ch') . $number,
 		);
-
+		$params['title_safe'] = preg_replace('/\s*[\.]$/i', '', $params['title_safe']);
 		if (cot::$cfg['plugin']['autotoc']['strip_tags']) $data['title'] = $params['title_safe'];
 		$tpl_data = array_merge($data, $params);
 
@@ -114,6 +122,8 @@ function buildTOC(&$text, $toc_data)
 		{
 			$tpl_data['sublist'] = buildTOC($text, $data['sublist']);
 		}
+		$params['title_safe'] = preg_replace('/\s*[:\.]$/i', '', $params['title_safe']);
+		$tpl_data['title'] = $tpl_data['title_safe'] = $params['title_safe'];
 		$toc_item = cot_rc('autotoc_item', $tpl_data);
 		$toc_list .= $toc_item;
 	}
